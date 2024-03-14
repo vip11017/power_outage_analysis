@@ -153,7 +153,14 @@ count_table = count_table / count_table.sum()
 count_table.head()
 ```
 
-# INSERT `count_table.head()`
+|   equipment failure |   fuel supply emergency |   intentional attack |   islanding |   public appeal |   severe weather |   system operability disruption |
+|--------------------:|------------------------:|---------------------:|------------:|----------------:|-----------------:|--------------------------------:|
+|           0.118644  |               0.0784314 |            0.0909091 |   0.0652174 |       0.0289855 |        0.177866  |                       0.0873016 |
+|           0.0508475 |               0.0980392 |            0.0478469 |   0.0217391 |       0.0289855 |        0.137022  |                       0.0238095 |
+|           0.0847458 |               0.27451   |            0.322967  |   0.0217391 |       0.057971  |        0.231884  |                       0.119048  |
+|           0.0338983 |               0.0196078 |            0.212919  |   0.108696  |       0.0289855 |        0.0382082 |                       0.031746  |
+|           0.169492  |               0.137255  |            0.0669856 |   0.0434783 |       0.608696  |        0.14888   |                       0.214286  |
+
 
 Next, I needed to find my observed statistic. To do this, I used the pandas.DataFrame.diff() method to be able to find the d
 
