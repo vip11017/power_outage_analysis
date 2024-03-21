@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=3f29a4ea6eb1b9f3b404d6b40305fdcd728f15c2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9321e1960183a714ed9b802b1a1f2e7f3fcba9c4">
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 <!-- Setup Google Analytics -->
@@ -68,13 +68,13 @@
 <h2 id="data-cleaning-and-exploratory-data-analysis">Data Cleaning and Exploratory Data Analysis</h2>
 <h4 id="data-cleaning">Data Cleaning</h4>
 
-<p>The column <code class="language-plaintext highlighter-rouge">OUTAGE.START.DATE</code> and <code class="language-plaintext highlighter-rouge">OUTAGE.START.TIME</code> are both <code class="language-plaintext highlighter-rouge">pd.timestamp()</code> values, so we can combine them to mame a new <code class="language-plaintext highlighter-rouge">OUTAGE.START</code> column containing the start date and time for the outage</p>
+<p>The column <code class="language-plaintext highlighter-rouge">OUTAGE.START.DATE</code> and <code class="language-plaintext highlighter-rouge">OUTAGE.START.TIME</code> are both <code class="language-plaintext highlighter-rouge">pd.timestamp()</code> values, so I combined them to mame a new <code class="language-plaintext highlighter-rouge">OUTAGE.START</code> column containing the start date and time for the outage</p>
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.DATE'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.DATE'</span><span class="p">].</span><span class="n">dt</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.TIME'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.TIME'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.DATE'</span><span class="p">]</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.START.TIME'</span><span class="p">])</span>
 </code></pre></div></div>
 
-<p>The column <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.DATE</code> and <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.TIME</code> are also <code class="language-plaintext highlighter-rouge">pd.timestamp()</code>, so I did the same thing</p>
+<p>The column <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.DATE</code> and <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.TIME</code> are also a <code class="language-plaintext highlighter-rouge">pd.timestamp()</code> type, so I did the same thing</p>
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.DATE'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.DATE'</span><span class="p">].</span><span class="n">dt</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d'</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.TIME'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.TIME'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.DATE'</span><span class="p">]</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s">'OUTAGE.RESTORATION.TIME'</span><span class="p">])</span>
@@ -505,8 +505,30 @@
 
 <h2 id="assessment-of-missingess">Assessment of Missingess</h2>
 <h3 id="nmar-analysis">NMAR Analysis</h3>
+<blockquote>
+  <p>I am testing the missingness in <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFETCED</code> against the feature <code class="language-plaintext highlighter-rouge">CLIMATE.CATEGORY</code></p>
+</blockquote>
+
+<iframe src="assets/missing_no_depends_bar.html" width="800" height="418" frameborder="0"></iframe>
+
+<p>Here you can see a distribution of <code class="language-plaintext highlighter-rouge">CLIMATE.CATEGORY</code> and the proportion for both when <code class="language-plaintext highlighter-rouge">CLIMATE.CATEGORY_MISSING</code> is <code class="language-plaintext highlighter-rouge">True</code> and when it’s <code class="language-plaintext highlighter-rouge">False</code>. Based on the graph we can see both distributions are very smiliar. To be sure I concluded a permutation test and chose Total Variation Distance(TVD) to be the test statistic. I chose this test statstic because this is comparing two categorical distributions</p>
+
+<iframe src="assets/missing_no_depends.html" width="800" height="418" frameborder="0"></iframe>
+
+<p>Based on this, I got a p-value of 0.34. So at the 5% significance level, we can say that <code class="language-plaintext highlighter-rouge">CLIMATE.CATEGORY</code> and <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFECTED</code> may not be statistically significantly associated with each other.</p>
 
 <h3 id="missingness-dependency">Missingness Dependency</h3>
+<blockquote>
+  <p>Here I am testing the same missingness but dependent on <code class="language-plaintext highlighter-rouge">NERC.REGION</code></p>
+</blockquote>
+
+<iframe src="assets/missing_depends_bar.html" width="800" height="418" frameborder="0"></iframe>
+
+<p>Here you can see various categories of <code class="language-plaintext highlighter-rouge">NERC.REGION</code> have trivial data where there is a clear difference between <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFECTED_MISSING = False</code> and <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFETCED_MISSING = True</code>. For example we can see this for the <code class="language-plaintext highlighter-rouge">WECC</code> category, where there is a far higher True proportion then False. To confirm this, I used a permutation test similiar to the one previously used, using the same test statistic, TVD.</p>
+
+<iframe src="assets/missing_depends.html" width="800" height="418" frameborder="0"></iframe>
+
+<p>Based on this Emperical Distribution, you can see that observed TVD is far higher than any TVD from the permutation test. This gives a p-value of 0.0. Where, at the 5% significance level, we can state that there lies a significance association between <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFECTED</code> missingness and <code class="language-plaintext highlighter-rouge">NERC.REGION</code>.</p>
 
 <h2 id="hypothesis-testing">Hypothesis Testing</h2>
 <p>We are investigating whether <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code> and <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> have the same ditribution, or in other words we want to see if there is a significant association between the two features. This could tell us some more insights on the data and a potential reasoning as to what features play an important part in the <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code>. To do this I am going to use a permutation test on the distribution of <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code> and <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> to see if there is such an association, or is it just by chance.</p>
@@ -517,23 +539,181 @@
 <strong>Significance Level:</strong> To ensure a good balance between Type I Error and Type II Error, I chose a significance level at 5% (0.05)</p>
 
 <p>To start I created a contingency table with the index being <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code>, and columns being <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code>, and then divide by the sum to be able to convert these “counts” into proportions”</p>
+
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count_table</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s">'CLIMATE.REGION'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s">'CAUSE.CATEGORY'</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s">'size'</span><span class="p">)</span>
 <span class="n">count_table</span> <span class="o">=</span> <span class="n">count_table</span> <span class="o">/</span> <span class="n">count_table</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
 
 <span class="n">count_table</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div></div>
 
-<h1 id="insert-count_tablehead">INSERT <code class="language-plaintext highlighter-rouge">count_table.head()</code></h1>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">CLIMATE.REGION</th>
+      <th style="text-align: right">equipment failure</th>
+      <th style="text-align: right">fuel supply emergency</th>
+      <th style="text-align: right">intentional attack</th>
+      <th style="text-align: right">islanding</th>
+      <th style="text-align: right">public appeal</th>
+      <th style="text-align: right">severe weather</th>
+      <th style="text-align: right">system operability disruption</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Central</td>
+      <td style="text-align: right">0.118644</td>
+      <td style="text-align: right">0.0784314</td>
+      <td style="text-align: right">0.0909091</td>
+      <td style="text-align: right">0.0652174</td>
+      <td style="text-align: right">0.0289855</td>
+      <td style="text-align: right">0.177866</td>
+      <td style="text-align: right">0.0873016</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">East North Central</td>
+      <td style="text-align: right">0.0508475</td>
+      <td style="text-align: right">0.0980392</td>
+      <td style="text-align: right">0.0478469</td>
+      <td style="text-align: right">0.0217391</td>
+      <td style="text-align: right">0.0289855</td>
+      <td style="text-align: right">0.137022</td>
+      <td style="text-align: right">0.0238095</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northeast</td>
+      <td style="text-align: right">0.0847458</td>
+      <td style="text-align: right">0.27451</td>
+      <td style="text-align: right">0.322967</td>
+      <td style="text-align: right">0.0217391</td>
+      <td style="text-align: right">0.057971</td>
+      <td style="text-align: right">0.231884</td>
+      <td style="text-align: right">0.119048</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northwest</td>
+      <td style="text-align: right">0.0338983</td>
+      <td style="text-align: right">0.0196078</td>
+      <td style="text-align: right">0.212919</td>
+      <td style="text-align: right">0.108696</td>
+      <td style="text-align: right">0.0289855</td>
+      <td style="text-align: right">0.0382082</td>
+      <td style="text-align: right">0.031746</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">South</td>
+      <td style="text-align: right">0.169492</td>
+      <td style="text-align: right">0.137255</td>
+      <td style="text-align: right">0.0669856</td>
+      <td style="text-align: right">0.0434783</td>
+      <td style="text-align: right">0.608696</td>
+      <td style="text-align: right">0.14888</td>
+      <td style="text-align: right">0.214286</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>Next, I needed to find my observed statistic. To do this, I used the pandas.DataFrame.diff() method to be able to find the d</p>
+<p>Next, I needed to find my observed statistic. To do this, I used the pandas.DataFrame.diff() method to be able to find the observed TVD.</p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">obs_tvd</span> <span class="o">=</span> <span class="n">count_table</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">abs</span><span class="p">().</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span><span class="mi">2</span>
+<span class="n">obs_tvd</span> <span class="o">=</span> <span class="n">obs_tvd</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+</code></pre></div></div>
+<p>I got an obsvered TVD of 2.74. Next, I performed a permutation test of 1000 repetitions. For each permutation test, I added the found TVD into a list where I can later visualize the Emperical Distribution of TVD.</p>
 
+<iframe src="assets/hypothesis_test.html" width="800" height="418" frameborder="0"></iframe>
+
+<p>Based on the disttribution you can see that the observed TVD is a lot higher than the expected TVD. So, when I calculated to find the p-value I got 0.0. This tells me that, at the 5% significance level, we can reject the null hypothesis, where we states that <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code> has no association with <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code>, and we may conclude that there actually may be an association</p>
 <h2 id="framing-a-prediction-problem">Framing a Prediction Problem</h2>
+
+<p>To be able to develop and understand a deeper view of the power outages cause, I am creating a predictive model based around the question of “Predict the causes of the power outages”.</p>
+
+<p>This problem would be a classifier since it is trying to predict certain pre-defined categories of power outages cause, instead of a numerical value. Since <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> is not made up of just two categories, but a variety of them, the typeo fo classifier I am building is a multiclass classification. The response variable will be <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> since we are trying to predict what caused the power outage, and <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> is defined by exactly that. To evaluate this classifier, I will be using accuracy since it is a simple straightforward approach that is also easily interpretable. Also, with accuracy you are able to see the proportion of scores that are correct which is what mainly matters. Compared to other metrics such as precision and recall, these are good when we care for either the “False Negative” or “False Positive” more than the other. However, in this case the importance of “False Negative” and “False Positive” are equally the same and there for Precision, Recall, and F1 Score may not be the best evaluation metric to use.</p>
 
 <h2 id="baseline-model">Baseline Model</h2>
 
+<p>For my baseline model, I decided to go with a Decision Tree, using sklearn’s <code class="language-plaintext highlighter-rouge">DecisionTreeClassifier()</code>. I chose this model because I needed something that can identify categories or “classes”, while also being easily manipulable, through its hyperparameters, to best accomadate the power outages dataframe. For this model I decided to drop all the features that contain missing (NaN) values or that were not important to determining the cause. These features are: <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY.DETAIL</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.START.DATE</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.START.TIME</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.DATE</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION.TIME</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.START</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.RESTORATION</code>, <code class="language-plaintext highlighter-rouge">HURRICANE.NAMES</code>, <code class="language-plaintext highlighter-rouge">DEMAND.LOSS.MW</code>, <code class="language-plaintext highlighter-rouge">OUTAGE.DURATION</code>. After doing so here are the stats for the features I used:</p>
+
+<blockquote>
+  <p><strong>Nominal</strong>: (5) <code class="language-plaintext highlighter-rouge">U.S._STATE</code>, <code class="language-plaintext highlighter-rouge">POSTAL.CODOE</code>, <code class="language-plaintext highlighter-rouge">NERC.REGION</code>, <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code>, <code class="language-plaintext highlighter-rouge">CLIMATE.CATEGORY</code> <br />
+<strong>Ordinal</strong>: (0) <br />
+<strong>Quantitative</strong>: (41) <code class="language-plaintext highlighter-rouge">YEAR</code>, <code class="language-plaintext highlighter-rouge">MONTH</code>, <code class="language-plaintext highlighter-rouge">ANOMALY.LEVEL</code>, <code class="language-plaintext highlighter-rouge">CUSTOMERS.AFFECTED</code>, <code class="language-plaintext highlighter-rouge">RES.PRICE</code>, <code class="language-plaintext highlighter-rouge">COM.PRICE</code>, <code class="language-plaintext highlighter-rouge">IND.PRICE</code>, <code class="language-plaintext highlighter-rouge">TOTAL.PRICE</code>, <code class="language-plaintext highlighter-rouge">RES.SALES</code>, <code class="language-plaintext highlighter-rouge">COM.SALES</code>, <code class="language-plaintext highlighter-rouge">IND.SALES</code>, <code class="language-plaintext highlighter-rouge">TOTAL.SALES</code>, <code class="language-plaintext highlighter-rouge">RES.PERCEN</code>, <code class="language-plaintext highlighter-rouge">COM.PERCEN</code>, <code class="language-plaintext highlighter-rouge">IND.PERCEN</code>, <code class="language-plaintext highlighter-rouge">RES.CUSTOMERS</code>, <code class="language-plaintext highlighter-rouge">COM.CUSTOMERS</code>, <code class="language-plaintext highlighter-rouge">IND.CUSTOMERS</code>, <code class="language-plaintext highlighter-rouge">TOTAL.CUSTOMERS</code>, <code class="language-plaintext highlighter-rouge">RES.CUST.PCT</code>, <code class="language-plaintext highlighter-rouge">COM.CUST.PCT</code>, <code class="language-plaintext highlighter-rouge">IND.CUST.PCT</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.STATE</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.USA</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.REL</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.CHANGE</code>, <code class="language-plaintext highlighter-rouge">UTIL.REALGSP</code>, <code class="language-plaintext highlighter-rouge">TOTAL.REALGSP</code>, <code class="language-plaintext highlighter-rouge">UTIL.CONTRI</code>, <code class="language-plaintext highlighter-rouge">PI.UTIL.OFUSA</code>, <code class="language-plaintext highlighter-rouge">POPULATION</code>, <code class="language-plaintext highlighter-rouge">POPPCT_URBAN</code>, <code class="language-plaintext highlighter-rouge">POPPCT_UC</code>, <code class="language-plaintext highlighter-rouge">POPDEN_URBAN</code>, <code class="language-plaintext highlighter-rouge">POPDEN_UC</code>, <code class="language-plaintext highlighter-rouge">POPDEN_RURAL</code>, <code class="language-plaintext highlighter-rouge">AREAPCT_URBAN</code>, <code class="language-plaintext highlighter-rouge">AREAPCT_UC</code>, <code class="language-plaintext highlighter-rouge">PCT_LAND</code>, <code class="language-plaintext highlighter-rouge">PCT_WATER_TOT</code>, <code class="language-plaintext highlighter-rouge">PCT_WATER_INLAND</code></p>
+</blockquote>
+
+<p>To determine the “importance” of each feature, I decided to perform an hypothesis test, where I tested the association between the feature and <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code>, after obtaining all the p-values I decided to pick the features that have extremeley low p-values or show significance at the 5% level. After filtering out the dataframe to only include these features and excluding the <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code> column, I got 46 features to include in my model. Out of these 46, the categorical columns were the 5 nominal features stated above, To handle these categorical columns so that it can be used in our decision tree I decided to One Hot Encode these features using sci-kit learn’s <code class="language-plaintext highlighter-rouge">OneHotEncoder</code>, which I did inside a <code class="language-plaintext highlighter-rouge">ColumnTransformer</code> method.</p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">decision_df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'CAUSE.CATEGORY'</span><span class="p">]).</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s">'object'</span><span class="p">]).</span><span class="n">columns</span><span class="p">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s">'onehot'</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="s">'first'</span><span class="p">,</span> <span class="n">handle_unknown</span><span class="o">=</span><span class="s">'ignore'</span><span class="p">),</span> <span class="n">categorical_cols</span><span class="p">)</span>
+    <span class="p">],</span> <span class="n">remainder</span><span class="o">=</span><span class="s">'passthrough'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>After defining the preprocessing step, I added <code class="language-plaintext highlighter-rouge">preprocessor</code> into a pipeline contianing this <code class="language-plaintext highlighter-rouge">preprocessor</code> and the <code class="language-plaintext highlighter-rouge">DecisionTreeClassifier()</code>. This makes using future process much easier since everything would all be in one place and you can run <code class="language-plaintext highlighter-rouge">.fit()</code> once instead of individually running it for each method.</p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s">'preproc'</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'classifier'</span><span class="p">,</span> <span class="n">DecisionTreeClassifier</span><span class="p">())</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>For the decision tree I used, there are many hyparameters that I can use to make it the most effective as possible. To achieve the best hyperparameter combination, I used a grid search from sci-kit learn’s <code class="language-plaintext highlighter-rouge">GridSearchCV</code>. In my <code class="language-plaintext highlighter-rouge">param_grid</code> dictionary, I included the hyperameters of <code class="language-plaintext highlighter-rouge">criterion</code>, <code class="language-plaintext highlighter-rouge">max_depth</code>, and <code class="language-plaintext highlighter-rouge">min_samples_split</code>. After fitting the grid search, we find that the best parameters comes out to be:</p>
+
+<blockquote>
+  <p><strong>criterion</strong>: “gini” <br />
+<strong>max_depth</strong>: 2 <br />
+<strong>min_samples_split</strong>: 2</p>
+</blockquote>
+
+<p>With using these hyperparameter values, we obtain an accuracy of:</p>
+<blockquote>
+  <p><strong>Train Score:</strong> 65.45% <br />
+<strong>Train Score:</strong> 63.3%</p>
+</blockquote>
+
 <h2 id="final-model">Final Model</h2>
 
+<p>Based on the baseline model, we see here that both the train and test score accuracy are lower percentages. To try and increase the score, I decided to perform binning transformation on all the features that explain the utility demographics such as the ones that are <code class="language-plaintext highlighter-rouge">___.SALES</code>, <code class="language-plaintext highlighter-rouge">___.PRICE</code>, <code class="language-plaintext highlighter-rouge">___.PERCEN</code>, <code class="language-plaintext highlighter-rouge">___.CUSTOMERS</code>. I chose these values because they have large ranges within each feature, and so it may be better to group them by their value. This would make the decision tree make “decisions” easier since it is then based on groups which might generalize the tree much better. With a more generalized decision tree, it would might decrease the training score accuracy, but it would increase the test score accuracy, which is more important for us.</p>
+
+<p>I also chose to perform a polynomial transformation of cerrtain features. The features I chose for this were: <code class="language-plaintext highlighter-rouge">PC.REALGSP.STATE</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.USA</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.REL</code>, <code class="language-plaintext highlighter-rouge">PC.REALGSP.CHANGE</code>, <code class="language-plaintext highlighter-rouge">UTIL.REALGSP</code>, <code class="language-plaintext highlighter-rouge">TOTAL.REALGSP</code>, <code class="language-plaintext highlighter-rouge">UTIL.CONTRI</code>, <code class="language-plaintext highlighter-rouge">PI.UTIL.OFUSA</code>, <code class="language-plaintext highlighter-rouge">POPPCT_URBAN</code>, <code class="language-plaintext highlighter-rouge">POPPCT_UC</code>, <code class="language-plaintext highlighter-rouge">POPDEN_URBAN</code>, <code class="language-plaintext highlighter-rouge">POPDEN_UC</code>, <code class="language-plaintext highlighter-rouge">POPDEN_RURAL</code>, <code class="language-plaintext highlighter-rouge">AREAPCT_URBAN</code>, <code class="language-plaintext highlighter-rouge">AREAPCT_UC</code>. These features all have a non-linear relationship, so by adding a polynomial transformation, it can help captures its relationship. It also allows the model to capture the interaction effects between different features, which might give an insight for the <code class="language-plaintext highlighter-rouge">CAUSE.CATEGORY</code>. By including this feature into our decision tree, it may improve the decision boundaries, which can make the class distinction more clearer and better fit the data. At first I tried running a <code class="language-plaintext highlighter-rouge">DecisionTreeClassifier()</code>, however the training accuracy only increased slightly. So I tried using a random forest.</p>
+
+<p>I tried using a random forest classifier through sci-kit learn’s <code class="language-plaintext highlighter-rouge">RandomForestClassifier()</code>. I chose this classifier because it solves the problem of always getting the same decision tree when using the same training data. When using a RandomForest you can use a subset of features through randomnessm which solves the problem and creates a more generalized tree that may work for more instances not in the training data. For my Random Forest, I used the same idea of a grid search to find its best hyperparameters. In my <code class="language-plaintext highlighter-rouge">param_grid</code> I included: <code class="language-plaintext highlighter-rouge">n_estimators</code>, <code class="language-plaintext highlighter-rouge">max_depth</code>, <code class="language-plaintext highlighter-rouge">min_samples_split</code>. I also chose a k-fold of 5, which should give enough folds to test all combinations. After running all of these hyperparameterscombinations, the highest performing hyperparameters are:</p>
+<blockquote>
+  <p><strong>max_depth:</strong> 14 <br />
+<strong>min_samples_split:</strong> 7 <br />
+<strong>n_estimators:</strong> 103</p>
+</blockquote>
+
+<p>with this hyperparameter combinations: I found an accuracy of:</p>
+<blockquote>
+  <p><strong>Train Score:</strong> 88.37%
+<strong>Test Score:</strong> 69.15%</p>
+</blockquote>
+
+<p>As you can see, compared to the baseline model, we see an overall improvement in the training and test score. We see a higher jump in accuracy for training, which makes sense because with our new features we added, we can capture more relationships between features. Also, wiht a random forest classifier, it adjusts for generalization which also leads to a higher training accuracy. Due to the features we added and the nature of Random Forest Classifier’s it’s clear how the test accuracy naturally increases as well.</p>
+
 <h2 id="fairness-analysis">Fairness Analysis</h2>
+
+<p>For my Fairness Analysis, I chose to compare the two groups of region, based on <code class="language-plaintext highlighter-rouge">CLIAMTE.REGION</code>. To do this, I binarized <code class="language-plaintext highlighter-rouge">CLIMATE.REGION</code> to create two regions, East and West.</p>
+<blockquote>
+  <p><strong>Group 1:</strong> Northeast, South, Southeast, East North Central (represented as ‘East’)<br />
+<strong>Group 2:</strong> West, Central, Northwest, Southwestm West North Central (represented as West) \</p>
+</blockquote>
+
+<p><strong>Evaluation Metric:</strong> The evaluation metric I used was the <strong>f1_score</strong>. I used the f1 score because our distribution of the two categories are not balanced, so by using the f1-score it takes into account the unbalanced nature.</p>
+
+<p>The <strong>Hypothesis Test</strong> I used was:</p>
+
+<p><strong>H<sub>0</sub>:</strong> Our model is fair. Its F1 score for West and East US are roughly the same, and any differences are due to random chance <br />
+<strong>H<sub>1</sub>:</strong> Our model is unfair. Its F1 score for West is lower than the East</p>
+
+<p><strong>Test Statistic:</strong> The Test statistic I used is the difference in F1 score. To do this I used <code class="language-plaintext highlighter-rouge">pandas</code> <code class="language-plaintext highlighter-rouge">.diff()</code> method between the two groups of East and West.</p>
+
+<p>After finding the observed test statstic, I ran a permutation test with 1000 iterations and added all the test statistics into a list <code class="language-plaintext highlighter-rouge">diff_in_f1</code>. When taking all of these values and plotting the distribution, I got this:</p>
+
+<iframe src="assets/fairness_eval.html" width="800" height="418" frameborder="0"></iframe>
+
+<p><strong>P-Value:</strong> As you can see on the visualization, using our p-value definition of:</p>
+
+<p><code class="language-plaintext highlighter-rouge">py (np.array(diff_in_f1) &lt; obs_diff).mean()</code></p>
+
+<p>Based on this we get a p-value of 0.00. This tells us that we can reject the null hypothesis and say that there is evidence to conclude that the F1 score for West may be significantly lower than the F1 socre for East.</p>
 
 
       <footer class="site-footer">
