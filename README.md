@@ -275,7 +275,7 @@ As you can see, compared to the baseline model, we see an overall improvement in
 
 For my Fairness Analysis, I chose to compare the two groups of region, based on `CLIAMTE.REGION`. To do this, I binarized `CLIMATE.REGION` to create two regions, East and West.
 > __Group 1:__ Northeast, South, Southeast, East North Central (represented as 'East')\
-__Group 2:__ West, Central, Northwest, Southwestm West North Central (represented as West) \
+__Group 2:__ West, Central, Northwest, Southwestm West North Central (represented as West)
 
 __Evaluation Metric:__ The evaluation metric I used was the __f1_score__. I used the f1 score because our distribution of the two categories are not balanced, so by using the f1-score it takes into account the unbalanced nature.
 
